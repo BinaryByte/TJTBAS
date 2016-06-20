@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<head>
+  <script src = "main.js"></script>
+  <script>
+  function start(){
+    var room1 = new TAS.room("Room #1", 1, "It is a stinky room.");
+    room1.inventory.push("Cake");
+    TAS.roomReader(1);
+  }
+  </script>
+</head>
+<body>
+<button onClick = "start()">Click here to start</button>
+</body>
+</html>
