@@ -67,7 +67,7 @@ var TAS = {
         document.body.innerHTML = "";
         room.inventory.splice(room.inventory[item]);
         TAS.roomReader(room.id);
-      } else if (TAS.rooms.length === i){
+      } else if (TAS.rooms.length <= i){
         console.error("TAS: Room Not found!");
       } else {
         console.log("TAS: Not this room...");
