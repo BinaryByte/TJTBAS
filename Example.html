@@ -5,6 +5,12 @@
   function start(){
     var room1 = new TAS.room("Room #1", 1, "It is a stinky room.");
     room1.inventory.push("Cake");
+    var room2 = new TAS.room("Room #2", 2, "It is a less stinky room.");
+    room2.inventory.push("More cake");
+    room2.accessibleRoomsId.push(1);
+    room1.accessibleRoomsId.push(2);
+    room1.placesName.push("A less stinky room.");
+    room2.placesName.push("A more stinky room.");
     TAS.roomReader(1);
   }
   </script>
