@@ -9,6 +9,9 @@
     room2.inventory.push("More cake");
     room2.accessibleRoomsId.push(1);
     room1.accessibleRoomsId.push(2);
+    room2.solved = false;
+    room2.solveItems.push("Cake");
+    room2.solvedText = "A secret door eats your delicious cake, and it opens.";
     room1.placesName.push("A less stinky room.");
     room2.placesName.push("A more stinky room.");
     TAS.roomReader(1);

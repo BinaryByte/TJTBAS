@@ -12,6 +12,9 @@ var TAS = {
     this.displayText = text;
     this.solvedText = "";
     this.solved = true;
+    this.solvedCondition = function () {
+      console.log("TAS: There's no solved condition for room " + this.id + ".")
+    }
     console.log("TAS: Room " + name + " Sucessfully created!");
   },
   roomReader: function(id){
@@ -37,6 +40,7 @@ var TAS = {
     console.log("TAS: Showing room description...");
     TAS.takeItems(room);
     TAS.gotoRoom(room);
+    TAS.checkSolution(room);
   },
   gotoRoom: function(room){
     for (i = 0; i < room.accessibleRoomsId.length; i++){
@@ -73,5 +77,32 @@ var TAS = {
         console.log("TAS: Not this room...");
       }
     }
+  },
+  checkSolution: function(room){
+    console.log("TAS: Checking for solution...");
+    if(room.solved === true){
+      console.log("Room already solved.");
+    } else {
+      var solutionNumber = room.solveItems.length;
+      var currentNumber = 0;
+      for(i = 0; i < room.solveItems.length; i++){
+        for(x = 0; x < TAS.inventory.length; x++){
+          if(room.solveItems[i] === TAS.inventory[x]){
+            console.log("TAS: Solved item found!");
+            currentNumber = currentNumber + 1;
+            if(currentNumber === solutionNumber){
+              TAS.solved(room);
+            }
+          } else {
+            console.log("TAS: Not this item...");
+          }
+        }
+      }
+    }
+  },
+  solved: function(room){
+    room.solved = true;
+    document.body.innerHTML = document.body.innerHTML + "<p>" + room.solvedText + "</p>";
+    room.solvedCondition();
   }
 }
