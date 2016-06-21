@@ -12,19 +12,28 @@ var TAS = {
     this.displayText = text;
     this.solvedText = "";
     this.solved = true;
+    console.log("TAS: Room " + name + " Sucessfully created!");
   },
   roomReader: function(id){
+    console.log("Searching for room...");
     for(i = 0; i < TAS.rooms.length; i++){
       if(TAS.rooms[i].id === id){
         console.log("TAS: Room Found!");
         TAS.showRoom(TAS.rooms[i]);
+      } else if (TAS.rooms.length === i){
+        console.error("TAS: Room Not found!");
       } else {
-        console.warn("TAS: Room Not found!");
+        console.log("TAS: Not this room...");
       }
     }
   },
   showRoom: function(room){
+    console.log("TAS: Attempting to show room...");
+    if(room.inventory.length === 0){
+      document.body.innerHTML += room.displayText + " The room contains nothing.";
+    } else {
     document.body.innerHTML = room.displayText + " The room contains " + room.inventory + ".";
+  }
     console.log("TAS: Showing room description...");
     TAS.takeItems(room);
     TAS.gotoRoom(room);
@@ -33,22 +42,35 @@ var TAS = {
     for (i = 0; i < room.accessibleRoomsId.length; i++){
       console.log("TAS: Finding available rooms...");
       document.body.innerHTML += "<p>Here is a list of available rooms that you can go to:</p>";
-      document.body.innerHTML = document.body.innerHTML + "<p><button onClick = \"TAS.roomReader(" + room.accessibleRoomsId[i] +")\">" + room.placesName[i] +"</button></p>";
+      document.body.innerHTML = document.body.innerHTML + "<p><button onClick = \"TAS.roomReader(" + room.accessibleRoomsId[i] +")\">" + room.placesName[i] +" </button></p>";
     }
   },
-  //Warning! INVENTORY SYSTEM IS NOT COMPLETE. DO NOT USE.
   takeItems: function(room){
+    if(room.inventory.length === 0){
+      document.body.innerHTML += "There's no items to collect here."
+    }
     document.body.innerHTML = document.body.innerHTML + "<p>What items would you like to take?</p>";
     for(i = 0; i < room.inventory.length; i++){
       console.log("TAS: Finding inventory items...");
-      document.body.innerHTML = document.body.innerHTML + " <p><button onClick = \"TAS.inventoryAdd(" + room + "," + i + "])\">" + room.inventory[i] + "</button></p>";
+      document.body.innerHTML = document.body.innerHTML + " <p><button onClick = \"TAS.inventoryAdd(" + room.id + ", " + i + ")\">" + room.inventory + "</button></p>";
     }
   },
-  inventoryAdd: function(room, roomInventoryItemId){
-    console.log("TAS: Attempting to add item id " + roomInventoryItemId + " from " + room)
-    room.inventory.splice(room.inventory[roomInventoryItemId])
-    TAS.inventory.push("" + room.inventory[roomInventoryItemId] + "");
-    console.log("TAS:" + room.inventory[roomInventoryItemId] + " successfully added.");
+  inventoryAdd: function(id, item){
+    for(i = 0; i < TAS.rooms.length; i++){
+      if(TAS.rooms[i].id === id){
+        console.log("TAS: Room Found!");
+        var room = TAS.rooms[i];
+        TAS.inventory.push(room.inventory[item]);
+        console.log("TAS: Item " + room.inventory[item] + " collected.");
+        console.log("TAS: Reloading room...");
+        document.body.innerHTML = "";
+        room.inventory.splice(room.inventory[item]);
+        TAS.roomReader(room.id);
+      } else if (TAS.rooms.length === i){
+        console.error("TAS: Room Not found!");
+      } else {
+        console.log("TAS: Not this room...");
+      }
+    }
   }
-
 }
