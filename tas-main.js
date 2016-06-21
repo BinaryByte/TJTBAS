@@ -47,9 +47,10 @@ var TAS = {
   },
   takeItems: function(room){
     if(room.inventory.length === 0){
-      document.body.innerHTML += "There's no items to collect here."
+      document.body.innerHTML += "<p>There's no items to collect here.</p>";
+    } else {
+      document.body.innerHTML = document.body.innerHTML + "<p>What items would you like to take?</p>";
     }
-    document.body.innerHTML = document.body.innerHTML + "<p>What items would you like to take?</p>";
     for(i = 0; i < room.inventory.length; i++){
       console.log("TAS: Finding inventory items...");
       document.body.innerHTML = document.body.innerHTML + " <p><button onClick = \"TAS.inventoryAdd(" + room.id + ", " + i + ")\">" + room.inventory + "</button></p>";
