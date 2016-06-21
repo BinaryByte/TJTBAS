@@ -26,3 +26,5 @@ We've created our first room! It has a name, an id, and a description. We can no
 TAS.roomReader(1);
 ```
 In between the brackets, put your room id, and TJTBAS will load the room, and show the description.
+
+And that's how you create a basic room. For more tutorials, the TJTBAS wiki should have more information.
