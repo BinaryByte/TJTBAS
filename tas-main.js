@@ -18,6 +18,7 @@ var TAS = {
     console.log("TAS: Room " + name + " Sucessfully created!");
   },
   roomReader: function(id){
+    document.body.innerHTML = "";
     console.log("Searching for room...");
     for(i = 0; i < TAS.rooms.length; i++){
       if(TAS.rooms[i].id === id){
@@ -38,9 +39,10 @@ var TAS = {
     document.body.innerHTML = room.displayText + " The room contains " + room.inventory + ".";
   }
     console.log("TAS: Showing room description...");
+    //First it loads the items in the room, and it checks if the solution is done, then it doesthe gotoRoom
+    TAS.checkSolution(room);
     TAS.takeItems(room);
     TAS.gotoRoom(room);
-    TAS.checkSolution(room);
   },
   gotoRoom: function(room){
     for (i = 0; i < room.accessibleRoomsId.length; i++){
@@ -68,8 +70,8 @@ var TAS = {
         TAS.inventory.push(room.inventory[item]);
         console.log("TAS: Item " + room.inventory[item] + " collected.");
         console.log("TAS: Reloading room...");
-        document.body.innerHTML = "";
         room.inventory.splice(room.inventory[item]);
+        document.body.innerHTML = "";
         TAS.roomReader(room.id);
       } else if (TAS.rooms.length <= i){
         console.error("TAS: Room Not found!");
@@ -92,6 +94,7 @@ var TAS = {
             currentNumber = currentNumber + 1;
             if(currentNumber === solutionNumber){
               TAS.solved(room);
+              console.log("Solved!");
             }
           } else {
             console.log("TAS: Not this item...");

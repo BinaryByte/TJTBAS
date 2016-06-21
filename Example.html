@@ -14,6 +14,14 @@
     room2.solvedText = "A secret door eats your delicious cake, and it opens.";
     room1.placesName.push("A less stinky room.");
     room2.placesName.push("A more stinky room.");
+    var room3 = new TAS.room("Room #3", 3, "It is a secret room.");
+    room3.inventory.push("Cheese");
+    room3.accessibleRoomsId.push(2);
+    room2.placesName.push("A less stinky room.");
+    room2.solvedCondition = function(){
+      room2.accessibleRoomsId.push(3);
+      room2.placesName.push("A secret room.");
+    }
     TAS.roomReader(1);
   }
   </script>
