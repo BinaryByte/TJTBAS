@@ -32,9 +32,9 @@ var TAS = {
   showRoom: function(room){
     console.log("TAS: Attempting to show room...");
     if(room.inventory.length === 0){
-      document.body.innerHTML += room.displayText + " The room contains nothing.";
+      document.body.innerHTML += room.displayText + " The area contains nothing.";
     } else {
-    document.body.innerHTML = room.displayText + " The room contains " + room.inventory + ".";
+    document.body.innerHTML = room.displayText + " The area contains " + room.inventory + ".";
   }
     console.log("TAS: Showing room description...");
     //First it loads the items in the room, and it checks if the solution is done, then it doesthe gotoRoom
@@ -47,7 +47,7 @@ var TAS = {
     if(room.accessibleRoomsId.length > 0){
     for (i = 0; i < room.accessibleRoomsId.length; i++){
       console.log("TAS: Finding available rooms...");
-      document.body.innerHTML += "<p>Here is a list of available rooms that you can go to:</p>";
+      document.body.innerHTML += "<p>Here is a list of available areas that you can go to:</p>";
       document.body.innerHTML = document.body.innerHTML + "<p><button onClick = \"TAS.roomReader(" + room.accessibleRoomsId[i] +")\">" + room.placesName[i] +" </button></p>";
     }
   } else {
