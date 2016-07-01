@@ -22,11 +22,7 @@ var TAS = {
     console.log("Searching for room...");
     //This is var i, because i was declared globally, messing up this
     for(var i = 0; i < TAS.rooms.length; i++){
-      console.log(TAS.rooms.length);
-      console.log(id);
       if(TAS.rooms[i].id === id){
-        console.log(TAS.rooms[i]);
-        console.log("TAS: Room Found!");
         TAS.showRoom(TAS.rooms[i]);
       } else {
         console.log("TAS: Not this room...");
