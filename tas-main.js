@@ -20,12 +20,14 @@ var TAS = {
   roomReader: function(id){
     document.body.innerHTML = "";
     console.log("Searching for room...");
-    for(i = 0; i < TAS.rooms.length; i++){
+    //This is var i, because i was declared globally, messing up this
+    for(var i = 0; i < TAS.rooms.length; i++){
+      console.log(TAS.rooms.length);
+      console.log(id);
       if(TAS.rooms[i].id === id){
+        console.log(TAS.rooms[i]);
         console.log("TAS: Room Found!");
         TAS.showRoom(TAS.rooms[i]);
-      } else if (TAS.rooms.length === i){
-        console.error("TAS: Room Not found!");
       } else {
         console.log("TAS: Not this room...");
       }
@@ -43,13 +45,18 @@ var TAS = {
     TAS.checkSolution(room);
     TAS.takeItems(room);
     TAS.gotoRoom(room);
+
   },
   gotoRoom: function(room){
+    if(room.accessibleRoomsId.length > 0){
     for (i = 0; i < room.accessibleRoomsId.length; i++){
       console.log("TAS: Finding available rooms...");
       document.body.innerHTML += "<p>Here is a list of available rooms that you can go to:</p>";
       document.body.innerHTML = document.body.innerHTML + "<p><button onClick = \"TAS.roomReader(" + room.accessibleRoomsId[i] +")\">" + room.placesName[i] +" </button></p>";
     }
+  } else {
+    console.log("No rooms");
+  }
   },
   takeItems: function(room){
     if(room.inventory.length === 0){
@@ -57,7 +64,7 @@ var TAS = {
     } else {
       document.body.innerHTML = document.body.innerHTML + "<p>What items would you like to take?</p>";
     }
-    for(i = 0; i < room.inventory.length; i++){
+    for(var i = 0; i < room.inventory.length; i++){
       console.log("TAS: Finding inventory items...");
       document.body.innerHTML = document.body.innerHTML + " <p><button onClick = \"TAS.inventoryAdd(" + room.id + ", " + i + ")\">" + room.inventory + "</button></p>";
     }
@@ -95,6 +102,8 @@ var TAS = {
             if(currentNumber === solutionNumber){
               TAS.solved(room);
               console.log("Solved!");
+            } else {
+              console.log("Not solved");
             }
           } else {
             console.log("TAS: Not this item...");
