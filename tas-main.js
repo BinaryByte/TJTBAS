@@ -45,7 +45,7 @@ var TAS = {
   },
   gotoRoom: function(room){
     if(room.accessibleRoomsId.length > 0){
-    for (i = 0; i < room.accessibleRoomsId.length; i++){
+    for (var i = 0; i < room.accessibleRoomsId.length; i++){
       console.log("TAS: Finding available rooms...");
       document.body.innerHTML += "<p>Here is a list of available areas that you can go to:</p>";
       document.body.innerHTML = document.body.innerHTML + "<p><button onClick = \"TAS.roomReader(" + room.accessibleRoomsId[i] +")\">" + room.placesName[i] +" </button></p>";
