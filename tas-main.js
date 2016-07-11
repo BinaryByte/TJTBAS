@@ -12,6 +12,7 @@ var TAS = {
     this.displayText = text;
     this.solvedText = "";
     this.solved = true;
+    this.checkedSolution = false;
     this.solvedCondition = function () {
       console.log("TAS: There's no solved condition for room " + this.id + ".")
     }
@@ -40,12 +41,13 @@ var TAS = {
     //First it loads the items in the room, and it checks if the solution is done, then it doesthe gotoRoom
     if(room.solved === false){
     TAS.checkSolution(room);
-  }
-    TAS.takeItems(room);
+    }
     TAS.gotoRoom(room);
+    TAS.takeItems(room);
 
   },
   gotoRoom: function(room){
+    if(room.checkedSolution === true){
     if(room.accessibleRoomsId.length > 0){
     for (i = 0; i < room.accessibleRoomsId.length; i++){
       console.log("TAS: Finding available rooms...");
@@ -55,6 +57,7 @@ var TAS = {
   } else {
     console.log("No rooms");
   }
+}
   },
   takeItems: function(room){
     if(room.inventory.length === 0){
@@ -87,8 +90,10 @@ var TAS = {
     }
   },
   checkSolution: function(room){
+    this.checkedSolution = false;
     console.log("TAS: Checking for solution...");
     if(room.solved === true){
+      this.checkedSolution = true;
       console.log("Room already solved.");
     } else {
       var solutionNumber = room.solveItems.length;
@@ -103,6 +108,7 @@ var TAS = {
               room.solvedCondition();
               room.solved = true;
               console.log("Solved!");
+              this.checkedSolution = true;
             } else {
               console.log("Not solved");
             }
