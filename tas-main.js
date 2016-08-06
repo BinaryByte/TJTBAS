@@ -7,7 +7,7 @@ var TAS = {
     this.inventory = [];
     this.accessibleRoomsId = [];
     this.placesName = [];
-    TAS.rooms.push(this);
+    TAS.rooms.push(this);f
     this.solveItems = [];
     this.displayText = text;
     this.solvedText = "";
