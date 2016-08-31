@@ -20,7 +20,7 @@ var TAS = {
   },
   roomReader: function(id){
     document.body.innerHTML = "";
-    console.log("Searching for room...");
+      console.log("TAS: Searching for room...");
     //This is var i, because i was declared globally, messing up this
     for(var i = 0; i < TAS.rooms.length; i++){
       if(TAS.rooms[i].id === id){
@@ -39,14 +39,11 @@ var TAS = {
   }
     console.log("TAS: Showing room description...");
     //First it loads the items in the room, and it checks if the solution is done, then it doesthe gotoRoom
-    if(room.solved === false){
-    TAS.checkSolution(room);
-    }
-    TAS.gotoRoom(room);
-    TAS.takeItems(room);
-
+          TAS.checkSolution(room);
   },
   gotoRoom: function(room){
+      console.log("TAS: Attempting to show available rooms...");
+      //BUG: There's a bug here where if the room isn't solved, it won't display accessible rooms.
     if(room.checkedSolution === true){
     if(room.accessibleRoomsId.length > 0){
     for (i = 0; i < room.accessibleRoomsId.length; i++){
@@ -55,11 +52,14 @@ var TAS = {
       document.body.innerHTML = document.body.innerHTML + "<p><button onClick = \"TAS.roomReader(" + room.accessibleRoomsId[i] +")\">" + room.placesName[i] +" </button></p>";
     }
   } else {
-    console.log("No rooms");
+      console.warn("TAS: No rooms to show!");
   }
-}
+    } else {
+        console.warn("TAS: Room solution not checked!");
+    }
   },
   takeItems: function(room){
+      if(room.checkedSolution === false){
     if(room.inventory.length === 0){
       document.body.innerHTML += "<p>There's no items to collect here.</p>";
     } else {
@@ -69,6 +69,9 @@ var TAS = {
       console.log("TAS: Finding inventory items...");
       document.body.innerHTML = document.body.innerHTML + " <p><button onClick = \"TAS.inventoryAdd(" + room.id + ", " + i + ")\">" + room.inventory + "</button></p>";
     }
+      } else {
+          console.warn("TAS: Room solution not checked!");
+      }
   },
   inventoryAdd: function(id, item){
     for(var i = 0; i < TAS.rooms.length; i++){
@@ -90,12 +93,15 @@ var TAS = {
     }
   },
   checkSolution: function(room){
-    this.checkedSolution = false;
+    room.checkedSolution = false;
     console.log("TAS: Checking for solution...");
     if(room.solved === true){
-      this.checkedSolution = true;
-      console.log("Room already solved.");
-    } else {
+        room.checkedSolution = true;
+        console.log("TAS: Room already solved.");
+        TAS.gotoRoom(room);
+        TAS.takeItems(room);
+    } else if (room.solved === false) {
+        console.log("TAS: Room not solved");
       var solutionNumber = room.solveItems.length;
       var currentNumber = 0;
       for(i = 0; i < room.solveItems.length; i++){
@@ -108,15 +114,23 @@ var TAS = {
               room.solvedCondition();
               room.solved = true;
               console.log("Solved!");
-              this.checkedSolution = true;
+              room.checkedSolution = true;
+              TAS.gotoRoom(room);
+              TAS.takeItems(room);
             } else {
-              console.log("Not solved");
+                console.log("TAS: Not solved yet...");
+              room.checkedSolution = true;
             }
-          } else {
+           } else {
             console.log("TAS: Not this item...");
           }
         }
       }
+        if(currentNumber < solutionNumber){
+            TAS.gotoRoom(room);
+            TAS.takeItems(room);}
+    } else {
+    console.error("The room is neither solved nor unsolved.");
     }
   }
 }
